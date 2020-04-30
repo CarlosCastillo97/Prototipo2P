@@ -281,13 +281,12 @@ public class MtnPuestos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         try{
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Prototipo2P", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into puesto values(?,?,?");
+            PreparedStatement pst = cn.prepareStatement("insert into puesto values(?,?,?)");
            
             pst.setString(1, txtCodP.getText().trim());
             pst.setString(2, txtNomP.getText().trim());
             pst.setString(3, txtEstadoP.getText().trim());
             pst.executeUpdate();
-            
             
             txtNomP.setText("");
             txtCodP.setText("");

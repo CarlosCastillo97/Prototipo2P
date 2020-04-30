@@ -181,17 +181,12 @@ public class MtnDepartamentos extends javax.swing.JInternalFrame {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Prototipo2P", "root", "");
             PreparedStatement pst = cn.prepareStatement("insert into departamento values(?,?,?)");
            
-           if(txtNomD.getText().length()==0){
-           JOptionPane.showMessageDialog(null, "Para continuar con el Registro Llene los campos solicitados");
-           txtNomD.requestFocus(); //Si algunos de los campos están vacios, el foco apunta al primer campo.......
-}else{
+           
             pst.setString(1, txtCodD.getText().trim());
             pst.setString(2, txtNomD.getText().trim());
             pst.setString(3, txtEstadoD.getText().trim());
             pst.executeUpdate();
-            
-     
-}
+           
             
             txtNomD.setText("");
             txtCodD.setText("");
