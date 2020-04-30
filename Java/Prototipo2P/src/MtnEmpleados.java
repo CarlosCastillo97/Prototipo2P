@@ -5,6 +5,7 @@ import java.awt.datatransfer.StringSelection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Random;
 import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
@@ -97,6 +98,11 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
         });
 
         jButton5.setText("Buscar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         txtCarnet.setEditable(false);
 
@@ -324,6 +330,34 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
         } catch (Exception e) {
         }    
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try{
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/filmmagic", "root", "");
+            PreparedStatement pst = cn.prepareStatement("select * from empleado where carnet_empleado = ?");
+            pst.setString(1, txtBuscar.getText().trim());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                txtNom.setText(rs.getString("nombre_empleado"));
+                txtDom.setText(rs.getString("domicilio_empleado"));
+                txtTel.setText(rs.getString("telefono_empleado"));
+                txtDPI.setText(rs.getString("dpi_empleado"));
+                txtCarnet.setText(rs.getString("carnet_empleado"));
+                txtFechaN.setText(rs.getString("fecha_nacimiento"));
+                txtEstatus.setText(rs.getString("estatus_empleado"));
+                txtPuesto.setText(rs.getString("fk_puesto"));
+                txtDep.setText(rs.getString("fk_departamento"));
+            } else {
+               JOptionPane.showMessageDialog(null, "Empleado no registrado.");
+            }
+            
+        }catch (Exception e){
+            
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
  String iNombre=""; String iTel="";
     private void ObtenerInicialesN(String nombre){
         int i=0, x=0, longitud=0;
