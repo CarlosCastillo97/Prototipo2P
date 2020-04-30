@@ -1,7 +1,13 @@
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Random;
+import java.util.stream.IntStream;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -57,6 +63,11 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,8 +76,18 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
         });
 
         jButton2.setText("Modificar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Generar Carnet");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -214,7 +235,6 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         ObtenerInicialesN(txtNom.getText());
         ObtenerInicialesA(txtTel.getText());
         ObtenerDigitosDPI(txtDPI.getText());
@@ -224,23 +244,87 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try{
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_ins", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into alumnos values(?,?,?)");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("insert into empleado values(?,?,?,?,?,?,?,?,?)");
             
+           if(txtNom.getText().length()==0){
+           JOptionPane.showMessageDialog(null, "Para continuar con el Registro Llene los campos solicitados");
+           txtNom.requestFocus(); //Si algunos de los campos están vacios, el foco apunta al primer campo.......
+            }else{
             pst.setString(1, txtCarnet.getText().trim());
             pst.setString(2, txtNom.getText().trim());
             pst.setString(3, txtDPI.getText().trim());
-            pst.setString(4, txt)
+            pst.setString(4, txtDom.getText().trim());
+            pst.setString(5, txtTel.getText().trim());
+            pst.setString(6, txtFechaN.getText().trim());
+            pst.setString(7, txtEstatus.getText().trim());
+            pst.setString(8, txtPuesto.getText().trim());
+            pst.setString(9, txtDep.getText().trim());
             pst.executeUpdate();
-            
-            txtNombre.setText("");
-            txtGrupo.setText("");
-            lblEstatus.setText("Registro exitoso.");
+            }
+            txtNom.setText("");
+            txtCarnet.setText("");
+            txtDPI.setText("");
+            txtDom.setText("");
+            txtTel.setText("");
+            txtFechaN.setText("");
+            txtEstatus.setText("");
+            txtPuesto.setText("");
+            txtDep.setText("");
+            JOptionPane.showMessageDialog(null, "Registro Exitoso");
         }catch (Exception e){
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-String iNombre=""; String iTel="";
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String ID = txtBuscar.getText().trim();
+            
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("update Usuarios set nombre_empleado = ?, dpi_empleado = ?, carnet_empleado = ?, telefono_empleado = ?, domicilio_empleado = ?, fecha_nacimiento = ?, estatus_empleado = ?, fk_puesto = ?, fk_departamento = ?  where carnet_empleado = " + ID);
+            
+            pst.setString(1, txtCarnet.getText().trim());
+            pst.setString(2, txtNom.getText().trim());
+            pst.setString(3, txtDPI.getText().trim());
+            pst.setString(4, txtDom.getText().trim());
+            pst.setString(5, txtTel.getText().trim());
+            pst.setString(6, txtFechaN.getText().trim());
+            pst.setString(7, txtEstatus.getText().trim());
+            pst.setString(8, txtPuesto.getText().trim());
+            pst.setString(9, txtDep.getText().trim());
+            pst.executeUpdate();
+            
+           JOptionPane.showMessageDialog(null, "Modificacion Exitosa");
+            
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try {
+             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("delete from empleado where carnet_empleado = ?");
+            
+            pst.setString(1, txtBuscar.getText().trim());
+            pst.executeUpdate();
+            
+            txtNom.setText("");
+            txtCarnet.setText("");
+            txtTel.setText("");
+            txtDPI.setText("");
+            txtDep.setText("");
+            txtDom.setText("");
+            txtEstatus.setText("");
+            txtFechaN.setText("");
+            txtPuesto.setText("");
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
+        } catch (Exception e) {
+        }    
+    }//GEN-LAST:event_jButton3ActionPerformed
+ String iNombre=""; String iTel="";
     private void ObtenerInicialesN(String nombre){
         int i=0, x=0, longitud=0;
         char ch;
@@ -291,7 +375,6 @@ String iNombre=""; String iTel="";
             iDPI+=dpi.charAt(i);
         }
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
