@@ -257,11 +257,7 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
         try{
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
             PreparedStatement pst = cn.prepareStatement("insert into empleado values(?,?,?,?,?,?,?,?,?)");
-            
-           if(txtNom.getText().length()==0){
-           JOptionPane.showMessageDialog(null, "Para continuar con el Registro Llene los campos solicitados");
-           txtNom.requestFocus(); //Si algunos de los campos están vacios, el foco apunta al primer campo.......
-            }else{
+           
             pst.setString(1, txtCarnet.getText().trim());
             pst.setString(2, txtNom.getText().trim());
             pst.setString(3, txtDPI.getText().trim());
@@ -272,7 +268,7 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
             pst.setString(8, txtPuesto.getText().trim());
             pst.setString(9, txtDep.getText().trim());
             pst.executeUpdate();
-            }
+            
             txtNom.setText("");
             txtCarnet.setText("");
             txtDPI.setText("");

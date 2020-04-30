@@ -4,6 +4,16 @@
  * and open the template in the editor.
  */
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Random;
+import java.util.stream.IntStream;
+import javax.swing.JOptionPane;
 /**
  *
  * @author OtakuGT

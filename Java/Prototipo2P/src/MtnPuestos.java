@@ -246,7 +246,7 @@ public class MtnPuestos extends javax.swing.JInternalFrame {
             txtCodP.setText("");
             txtNomP.setText("");
             txtEstadoP.setText("");
-            
+            JOptionPane.showMessageDialog(null, "Registro Eliminado");
         } catch (Exception e) {
         }    
     }//GEN-LAST:event_btnBajaActionPerformed
@@ -257,25 +257,37 @@ public class MtnPuestos extends javax.swing.JInternalFrame {
 
     private void btnBuscarxNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarxNomActionPerformed
         // TODO add your handling code here:
+        try{
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("select * from puesto where id_puesto = ?");
+            pst.setString(1, txtBuscar.getText().trim());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                txtNomP.setText(rs.getString("nombre_puesto"));
+                txtCodP.setText(rs.getString("id_puesto"));
+                txtEstadoP.setText(rs.getString("estado_puesto"));
+            } else {
+               JOptionPane.showMessageDialog(null, "Puesto no registrado.");
+            }
+            
+        }catch (Exception e){
+            
+        }
     }//GEN-LAST:event_btnBuscarxNomActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
         // TODO add your handling code here:
         try{
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Prototipo2P", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into puesto values(?,?,?,?,?)");
+            PreparedStatement pst = cn.prepareStatement("insert into puesto values(?,?,?");
            
-           if(txtNomP.getText().length()==0){
-           JOptionPane.showMessageDialog(null, "Para continuar con el Registro Llene los campos solicitados");
-           txtNomP.requestFocus(); //Si algunos de los campos están vacios, el foco apunta al primer campo.......
-         }else{
             pst.setString(1, txtCodP.getText().trim());
             pst.setString(2, txtNomP.getText().trim());
             pst.setString(3, txtEstadoP.getText().trim());
             pst.executeUpdate();
             
-     
-}
             
             txtNomP.setText("");
             txtCodP.setText("");
