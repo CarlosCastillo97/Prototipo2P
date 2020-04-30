@@ -2,6 +2,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
@@ -82,6 +83,11 @@ public class MtnDepartamentos extends javax.swing.JInternalFrame {
         jLabel3.setText("Estado");
 
         jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Buscar:");
 
@@ -172,8 +178,8 @@ public class MtnDepartamentos extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try{
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/filmmagic", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into Usuarios values(?,?,?,?,?)");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("insert into departamento values(?,?,?)");
            
            if(txtNomD.getText().length()==0){
            JOptionPane.showMessageDialog(null, "Para continuar con el Registro Llene los campos solicitados");
@@ -203,7 +209,7 @@ public class MtnDepartamentos extends javax.swing.JInternalFrame {
             String ID = txtBuscar.getText().trim();
             
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
-            PreparedStatement pst = cn.prepareStatement("update departamento set id_departamento = ?, nombre_departamento = ?, estado_departamento = ?  where carnet_empleado = " + ID);
+            PreparedStatement pst = cn.prepareStatement("update departamento set id_departamento = ?, nombre_departamento = ?, estado_departamento = ?  where id_departamento = " + ID);
             
             pst.setString(1, txtCodD.getText().trim());
             pst.setString(2, txtNomD.getText().trim());
@@ -232,6 +238,28 @@ public class MtnDepartamentos extends javax.swing.JInternalFrame {
         } catch (Exception e) {
         }    
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+         try{
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
+            PreparedStatement pst = cn.prepareStatement("select * from departamento where id_departamento = ?");
+            pst.setString(1, txtBuscar.getText().trim());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                txtNomD.setText(rs.getString("nombre_departamento"));
+                txtCodD.setText(rs.getString("id_departamento"));
+                txtEstadoD.setText(rs.getString("estado_departamento"));
+            } else {
+               JOptionPane.showMessageDialog(null, "Departamento no registrado.");
+            }
+            
+        }catch (Exception e){
+            
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 String iTexto="";
     private void ObtenerInicial(String texto){
         for(int i=0; i<5; i++){

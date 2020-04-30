@@ -241,10 +241,15 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String validacion=""; 
+        validacion=txtNom.getText();
+        if(validacion.equals("")){
+            JOptionPane.showMessageDialog(null, "Por Favor, ingrese un nombre para el empleado");
+        }else{
         ObtenerInicialesN(txtNom.getText());
         ObtenerInicialesA(txtTel.getText());
         ObtenerDigitosDPI(txtDPI.getText());
-        txtCarnet.setText(iNombre.toUpperCase()+iTel.toUpperCase()+iDPI);
+        txtCarnet.setText(iNombre.toUpperCase()+iTel.toUpperCase()+iDPI);}
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -334,7 +339,7 @@ public class MtnEmpleados extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         try{
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/filmmagic", "root", "");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Prototipo2P", "root", "");
             PreparedStatement pst = cn.prepareStatement("select * from empleado where carnet_empleado = ?");
             pst.setString(1, txtBuscar.getText().trim());
             
